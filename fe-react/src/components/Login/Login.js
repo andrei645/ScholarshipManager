@@ -5,24 +5,42 @@ import "./Login.scss";
 
 export const Login = () => {
   return (
-    <>
-      <Button
-        type={"button"}
-        role={"secondary"}
-        onClick={() => console.log("click")}
-      >
-        Login button test
-      </Button>
-      <Input
-        type="text"
-        name="username"
-        label="Username"
-        value={12}
-        placeholder="Enter your username"
-        errorMessage={"eroare"}
-        onChange={() => console.log("changed")}
-        className="test"
-      />
-    </>
+    <div className="container">
+    <div className="row justify-content-center">
+      <div className="col-md-6">
+        <div className="card mt-5">
+          <div className="card-body">
+            <h2 className="card-title text-center">Login</h2>
+            <form>
+              <div className="mb-3">
+            <Input
+              type="text"
+              name="email"
+              label="Email"
+              placeholder="Enter your email"
+              onChange={() => console.log("changed")}
+              className="input-textField"
+            />
+            <Input
+              type="text"
+              name="password"
+              label="Password"
+              placeholder="Choose a password"
+              onChange={() => console.log("changed")}
+              className="input-textField"
+            />
+              <Button
+              type={"button"} className=""
+              onClick={() => console.log("click")}
+              > Login
+            </Button> 
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
   );
 };
