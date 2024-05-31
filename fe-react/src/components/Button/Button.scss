@@ -1,0 +1,12 @@
+@import "../../utils/utils.scss";
+.default-button{
+    color: $button-text-color;
+    cursor: pointer;
+}
+
+.btn-primary{
+    background-color: $primary-button-background;
+    border-radius: $border-radius;
+    padding: 1rem;
+
+}

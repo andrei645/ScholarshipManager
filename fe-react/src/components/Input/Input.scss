@@ -1,0 +1,29 @@
+@import "../../utils/utils.scss";
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    
+  
+  label {
+    margin-bottom: 5px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 17px;
+  }
+  
+    input {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .error-message {
+    color: $error-color;
+    font-size: 15px;
+    margin-top: 5px;
+    text-align: left;
+  }
+  
+}
