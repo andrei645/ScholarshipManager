@@ -3,11 +3,15 @@ package controllers;
 import api.UserApi;
 import exceptions.NotFoundException;
 import handlers.Response;
+import models.Course;
+import models.Grade;
 import models.User;
 import services.UserService;
 import utils.PasswordEncryptor;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 
 
 public class UserController implements UserApi {
@@ -50,5 +54,20 @@ public class UserController implements UserApi {
 
         UserService.deleteUser(email);
         return Response.ok();
+    }
+
+    @Override
+    public List<Grade> getGradesByUserId(Long userId) {
+        return UserService.getGradesByUserId(userId);
+    }
+
+    @Override
+    public List<Course> getCoursesByUserId(Long userId) {
+        return UserService.getCoursesByUserId(userId);
+    }
+
+    @Override
+    public Map<Course, List<Grade>> getCourseAndNotesByUserId(Long userId) {
+        return UserService.getCourseAndNotesByUserId(userId);
     }
 }
