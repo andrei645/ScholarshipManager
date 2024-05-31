@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../components/Button/Button";
+import axiosInstance from "../services/AxiosInstance";
 
 export const Authentication = () => {
     const [isOnLoginComponent, setIsOnLoginComponent] = useState(true);
-
+    
     return(
         <>
             <Button type="button" role="secondary" onClick={() => setIsOnLoginComponent(!isOnLoginComponent)}>Switch</Button>
