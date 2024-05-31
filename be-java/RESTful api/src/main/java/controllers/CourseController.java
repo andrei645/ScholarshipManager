@@ -6,6 +6,8 @@ import exceptions.NotFoundException;
 import models.Course;
 import services.CourseService;
 
+import java.util.List;
+
 public class CourseController implements CourseApi {
 
     @Override
@@ -16,5 +18,10 @@ public class CourseController implements CourseApi {
     @Override
     public void deleteCourse(Long courseId) throws NotFoundException {
         CourseService.deleteCourse(courseId);
+    }
+
+    @Override
+    public List<Course> getCoursesByUserId(Long userId) {
+        return CourseService.getCoursesByUserId(userId);
     }
 }

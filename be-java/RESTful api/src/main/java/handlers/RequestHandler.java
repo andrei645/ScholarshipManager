@@ -1,5 +1,6 @@
 package handlers;
 
+import datatransferobjects.CourseGradesDTO;
 import api.*;
 import authorization.AuthenticationRequest;
 import authorization.AuthorizationController;
@@ -23,11 +24,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -110,7 +109,10 @@ public class RequestHandler implements HttpHandler {
 
                 //User role and subject obtained from jwt payload
                 String payloadUserMail = (String) claims.get("email");
-                Long payloadUserId = (Long) claims.get("id");
+                Long payloadUserId = Long.parseLong((String) claims.get("id"));
+
+                //TODO: add role handling as if clause (suggestion - have an enum with available roles
+                // and compare with 'payloadUserRole' -> if desired role provided -> call backend)
                 String payloadUserRole = (String) claims.get("role");
 
 
@@ -135,10 +137,10 @@ public class RequestHandler implements HttpHandler {
                         response = toJson(courses);
                         statusCode = 200;
                     } else if (method.equals("POST") && path.matches("/api/users/coursesAndNotes")) {
-                        Map<Course, List<Grade>> courseGradesMap = userApi.getCourseAndNotesByUserId(payloadUserId);
+                        List<CourseGradesDTO> courseGradesMap = userApi.getCourseAndNotesByUserId(payloadUserId);
                         response = toJson(courseGradesMap);
                         statusCode = 200;
-                    } else if (method.equals("POST") && path.matches("/api/users/courses")) {
+                    } else if (method.equals("POST") && path.matches("/api/courses")) {
                         try {
                             // Assuming payloadCourse contains the course details extracted from the request
                             Course course = fromJson(body, Course.class);
@@ -154,7 +156,7 @@ public class RequestHandler implements HttpHandler {
                             response = e.getMessage();
                             statusCode = 500; // Internal Server Error
                         }
-                    } else if (method.equals("DELETE") && path.matches("/api/users/courses/\\d+")) {
+                    } else if (method.equals("DELETE") && path.matches("/api/courses/\\d+")) {
                         try {
                             Long courseId = Long.parseLong(path.substring(path.lastIndexOf('/') + 1));
                             // Assuming payloadCourseId contains the course ID extracted from the request
@@ -170,8 +172,22 @@ public class RequestHandler implements HttpHandler {
                             response = e.getMessage();
                             statusCode = 500; // Internal Server Error
                         }
+                    } else if (method.equals("GET") && path.matches("/api/users/courses/\\d+")) {
+                        try {
+                            Long userId = Long.parseLong(path.substring(path.lastIndexOf('/') + 1));
+                            // Assuming payloadCourseId contains the course ID extracted from the request
+
+                            // Delete the course
+                            List<Course> courses = courseApi.getCoursesByUserId(userId);
+                            response = toJson(courses);
+                            statusCode = 200; // OK
+                        } catch (Exception e) {
+                            // Handle any exceptions that may occur
+                            response = e.getMessage();
+                            statusCode = 500; // Internal Server Error
+                        }
                     }
-                    else if (method.equals("POST") && path.matches("/api/users/grades")) {
+                    else if (method.equals("POST") && path.matches("/api/grades")) {
                         try {
                             // Assuming payloadGrade contains the grade details extracted from the request
                             Grade grade = fromJson(body, Grade.class);
@@ -195,7 +211,7 @@ public class RequestHandler implements HttpHandler {
                     response = e.getMessage();
                     statusCode = 404;
                 }
-                //TODO: restore it when it will be thrown
+                //TODO: restore it when it will be thrown ( when role authentication will be implemented)
 //                catch (AuthorizationException e) {
 //                    response = e.getMessage();
 //                    statusCode = 401;

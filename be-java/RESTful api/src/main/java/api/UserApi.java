@@ -1,5 +1,6 @@
 package api;
 
+import datatransferobjects.CourseGradesDTO;
 import exceptions.NotFoundException;
 import handlers.Response;
 import models.User;
@@ -8,7 +9,6 @@ import models.Grade;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Map;
 
 public interface UserApi {
     User getUserByEmail(String email) throws NotFoundException;
@@ -17,5 +17,5 @@ public interface UserApi {
 
     List<Grade> getGradesByUserId(Long userId) throws NotFoundException;
     List<Course> getCoursesByUserId(Long userId) throws NotFoundException;
-    Map<Course, List<Grade>> getCourseAndNotesByUserId(Long userId) throws NotFoundException;
+    List<CourseGradesDTO> getCourseAndNotesByUserId(Long userId) throws NotFoundException;
 }

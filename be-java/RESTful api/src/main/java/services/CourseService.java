@@ -5,7 +5,10 @@ import exceptions.NotFoundException;
 import models.Course;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseService {
 
@@ -53,5 +56,29 @@ public class CourseService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<Course> getCoursesByUserId(Long userId) {
+        List<Course> courses = new ArrayList<>();
+        String query = "SELECT c.id, c.name FROM courses c " +
+                "INNER JOIN user_courses uc ON c.id = uc.course_id " +
+                "WHERE uc.user_id = ?";
+
+        try (PreparedStatement statement = Data.getInstance().getConnection().prepareStatement(query)) {
+            statement.setLong(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Course course = new Course();
+                course.setId(resultSet.getLong("id"));
+                course.setName(resultSet.getString("name"));
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return courses;
     }
 }

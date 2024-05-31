@@ -57,7 +57,7 @@ public class AuthorizationService {
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION_TIME);
 
         Claims claims = Jwts.claims();
-        claims.put("id", user.getId());
+        claims.put("id",String.valueOf(user.getId()));
         claims.put("email", user.getEmail());
         claims.put("role", user.getRole());
         claims.put("firstName", user.getPrenume());

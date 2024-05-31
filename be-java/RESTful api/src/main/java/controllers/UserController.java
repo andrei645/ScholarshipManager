@@ -1,5 +1,6 @@
 package controllers;
 
+import datatransferobjects.CourseGradesDTO;
 import api.UserApi;
 import exceptions.NotFoundException;
 import handlers.Response;
@@ -10,8 +11,9 @@ import services.UserService;
 import utils.PasswordEncryptor;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class UserController implements UserApi {
@@ -67,7 +69,13 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public Map<Course, List<Grade>> getCourseAndNotesByUserId(Long userId) {
-        return UserService.getCourseAndNotesByUserId(userId);
+    public List<CourseGradesDTO> getCourseAndNotesByUserId(Long userId) {
+        List<CourseGradesDTO> courseGradesDTO = new ArrayList<>();
+
+        UserService.getCourseAndNotesByUserId(userId).forEach((k, v) -> {
+            courseGradesDTO.add(new CourseGradesDTO(k.getName(),
+                    v.stream().map(Grade::getValue).collect(Collectors.toList())));
+        });
+        return courseGradesDTO;
     }
 }
