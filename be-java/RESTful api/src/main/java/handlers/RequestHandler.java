@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import controllers.CourseController;
+import controllers.GradeController;
 import controllers.UserController;
 import exceptions.*;
 import io.jsonwebtoken.Claims;
@@ -25,6 +27,7 @@ import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -32,10 +35,14 @@ public class RequestHandler implements HttpHandler {
     private static final String SECRET_KEY = KeyGenerator.getInstance().getSecretKey();
     private final AuthorizationApi authorizationApi;
     private final UserApi userApi;
+    private final GradeApi gradeApi;
+    private final CourseApi courseApi;
 
     public RequestHandler() {
         authorizationApi = new AuthorizationController();
         userApi = new UserController();
+        gradeApi = new GradeController();
+        courseApi = new CourseController();
     }
 
     @Override
@@ -102,8 +109,8 @@ public class RequestHandler implements HttpHandler {
                         .getBody();
 
                 //User role and subject obtained from jwt payload
-                String payloadUserMail = claims.getSubject();
-
+                String payloadUserMail = (String) claims.get("email");
+                Long payloadUserId = (Long) claims.get("id");
                 String payloadUserRole = (String) claims.get("role");
 
 
@@ -119,7 +126,68 @@ public class RequestHandler implements HttpHandler {
                         User user = fromJson(body, User.class);
                         response = String.valueOf(userApi.updateUser(user));
                         statusCode = 200;
-                    } else {
+                    } else if (method.equals("GET") && path.matches("/api/users/grades")) {
+                        List<Grade> grades = userApi.getGradesByUserId(payloadUserId);
+                        response = toJson(grades);
+                        statusCode = 200;
+                    } else if (method.equals("GET") && path.matches("/api/users/courses")) {
+                        List<Course> courses = userApi.getCoursesByUserId(payloadUserId);
+                        response = toJson(courses);
+                        statusCode = 200;
+                    } else if (method.equals("POST") && path.matches("/api/users/coursesAndNotes")) {
+                        Map<Course, List<Grade>> courseGradesMap = userApi.getCourseAndNotesByUserId(payloadUserId);
+                        response = toJson(courseGradesMap);
+                        statusCode = 200;
+                    } else if (method.equals("POST") && path.matches("/api/users/courses")) {
+                        try {
+                            // Assuming payloadCourse contains the course details extracted from the request
+                            Course course = fromJson(body, Course.class);
+
+                            // Create the course
+                            courseApi.createCourse(course);
+
+                            // Set the response body and status code
+                            response = "Course created successfully";
+                            statusCode = 201; // Created
+                        } catch (Exception e) {
+                            // Handle any exceptions that may occur
+                            response = e.getMessage();
+                            statusCode = 500; // Internal Server Error
+                        }
+                    } else if (method.equals("DELETE") && path.matches("/api/users/courses/\\d+")) {
+                        try {
+                            Long courseId = Long.parseLong(path.substring(path.lastIndexOf('/') + 1));
+                            // Assuming payloadCourseId contains the course ID extracted from the request
+
+                            // Delete the course
+                            courseApi.deleteCourse(courseId);
+
+                            // Set the response body and status code
+                            response = "Course deleted successfully";
+                            statusCode = 200; // OK
+                        } catch (Exception e) {
+                            // Handle any exceptions that may occur
+                            response = e.getMessage();
+                            statusCode = 500; // Internal Server Error
+                        }
+                    }
+                    else if (method.equals("POST") && path.matches("/api/users/grades")) {
+                        try {
+                            // Assuming payloadGrade contains the grade details extracted from the request
+                            Grade grade = fromJson(body, Grade.class);
+
+                            // Add the grade
+                            gradeApi.addGrade(grade);
+
+                            // Set the response body and status code
+                            response = "Grade added successfully";
+                            statusCode = 201; // Created
+                        } catch (Exception e) {
+                            // Handle any exceptions that may occur
+                            response = e.getMessage();
+                            statusCode = 500; // Internal Server Error
+                        }
+                    }else {
                         response = "Endpoint not found";
                         statusCode = 404;
                     }
