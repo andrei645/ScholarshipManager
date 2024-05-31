@@ -4,6 +4,7 @@ import { NotFound } from "./pages/NotFound";
 import { Authentication } from "./pages/Authentication";
 import { Input } from "./components/Input/Input";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Dashboard } from "./pages/Dashboard";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" Component={Authentication} />
         <Route path="*" Component={NotFound} />
+        <Route path="/dashboard" Component={Dashboard} />
       </Routes>
     </div>
   );

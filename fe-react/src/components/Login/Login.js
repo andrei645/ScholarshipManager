@@ -5,12 +5,17 @@ import "./Login.scss";
 import { useState } from "react";
 import axiosInstance from "../../services/AxiosInstance";
 import {useNavigate} from "react-router-dom";
+import { useMySchoolarContext } from "../../context/SchoolarContext";
+import { jwtDecode } from "jwt-decode";
 
 export const Login = () => {
+  const {state, setUserData} = useMySchoolarContext();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -29,7 +34,9 @@ export const Login = () => {
       .then((response) => {
         const jwtToken = response.data;
         sessionStorage.setItem("auth_code", jwtToken);
-        navigate('*')
+        const decodedToken = jwtDecode(jwtToken);
+        setUserData(decodedToken)
+        navigate('/dashboard')
       })
       .catch(() => {
         setError("Wrong credentials");
