@@ -8,7 +8,7 @@ export const Login = () => {
     <>
       <Button
         type={"button"}
-        role={"primary"}
+        role={"secondary"}
         onClick={() => console.log("click")}
       >
         Login button test

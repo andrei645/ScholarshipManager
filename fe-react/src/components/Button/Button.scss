@@ -2,11 +2,23 @@
 .default-button{
     color: $button-text-color;
     cursor: pointer;
+    padding: 1rem;
+    border-radius: $border-radius;
+    border: none;
+
 }
 
 .btn-primary{
     background-color: $primary-button-background;
-    border-radius: $border-radius;
-    padding: 1rem;
+}
+.btn-secondary{
+    background-color: $secondary-button-background;
+}
 
+.btn-primary:hover{
+    background-color: $hover-primary-button-background;
+}
+
+.btn-secondary:hover{
+    background-color: $hover-secondary-button-background;
 }
