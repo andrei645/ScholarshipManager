@@ -7,7 +7,6 @@ const DashboardMapping = {
     'student': StudentDashboard,
     'profesor': TeacherDashboard,
     'admin': AdminDashboard
-
 }
 
 export const Dashboard = () => {
@@ -22,4 +21,4 @@ export const Dashboard = () => {
     return(
         <Component userDetails={state.userDetails}/>
     )
-}
+};
