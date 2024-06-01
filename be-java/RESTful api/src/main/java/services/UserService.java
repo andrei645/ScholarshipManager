@@ -148,9 +148,12 @@ public class UserService {
     public static Map<Course, List<Grade>> getCourseAndNotesByUserId(Long userId) {
         Map<Course, List<Grade>> courseGradesMap = new HashMap<>();
 
-        String query = "SELECT c.id AS course_id, c.name AS course_name, " +
-                "g.id AS grade_id, g.student_id, g.course_id, g.value " +
-                "FROM courses c LEFT JOIN grades g ON c.id = g.course_id AND g.student_id = ?";
+        String query = "SELECT c.id AS course_id, c.name AS course_name, g.value AS grade " +
+                "FROM users u " +
+                "JOIN user_courses uc ON u.id = uc.user_id " +
+                "JOIN courses c ON uc.course_id = c.id " +
+                "LEFT JOIN grades g ON u.id = g.student_id AND c.id = g.course_id " +
+                "WHERE u.id = ?";
 
         try (PreparedStatement statement = Data.getInstance().getConnection().prepareStatement(query)) {
             statement.setLong(1, userId);
@@ -158,28 +161,19 @@ public class UserService {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Long courseId = resultSet.getLong("course_id");
-                Long gradeId = resultSet.getLong("grade_id");
-                Float gradeValue = resultSet.getFloat("value");
-
-                // Retrieve or create Course object
                 Course course = new Course();
-                course.setId(courseId);
+                course.setId(resultSet.getLong("course_id"));
                 course.setName(resultSet.getString("course_name"));
+
+                Grade grade = new Grade();
+                grade.setStudentId(userId); // Set student ID to the provided user ID
+                grade.setCourseId(resultSet.getLong("course_id"));
+                grade.setValue(resultSet.getFloat("grade"));
 
                 // Retrieve or create list of Grade objects for the course
                 List<Grade> gradeList = courseGradesMap.computeIfAbsent(course, key -> new ArrayList<>());
-
-                // If grade exists, create Grade object and add it to the list of grades for the course
-                if (gradeId != 0) {
-                    Grade grade = new Grade();
-                    grade.setStudentId(userId);
-                    grade.setCourseId(courseId);
-                    grade.setValue(gradeValue);
-                    gradeList.add(grade);
-                }
+                gradeList.add(grade);
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
