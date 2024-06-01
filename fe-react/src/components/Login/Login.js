@@ -35,8 +35,8 @@ export const Login = () => {
         const jwtToken = response.data;
         sessionStorage.setItem("auth_code", jwtToken);
         const decodedToken = jwtDecode(jwtToken);
-        setUserData(decodedToken)
-        navigate('/dashboard')
+        setUserData(decodedToken);
+        window.location.href = "/";
       })
       .catch(() => {
         setError("Wrong credentials");
