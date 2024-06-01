@@ -7,8 +7,7 @@ import { Button } from '../Button/Button';
 export const Register = () => {
   return (
     <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
+      <div className="row justify-content-start">
           <div className="card mt-5">
             <div className="card-body">
               <h2 className="card-title text-center">Register</h2>
@@ -58,7 +57,6 @@ export const Register = () => {
                 
               </form>
             </div>
-          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,9 @@
+@import "../../utils/utils.scss";
+
+header {
+    background-color: $primary-color;
+}
+
+header h1,h4 {
+    letter-spacing: 1px;
+}

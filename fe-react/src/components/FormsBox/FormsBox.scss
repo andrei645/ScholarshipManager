@@ -1,0 +1,36 @@
+@import "../../utils/utils.scss";
+
+@keyframes fadeBorder {
+    0% {
+      border-color: $secondary-color;
+    }
+    50% {
+      border-color: #f4da87;
+    }
+    100% {
+      border-color: #f6ecca;
+    }
+  }
+  
+  .border-fade {
+    border: 5px solid transparent;
+    animation: fadeBorder 1.5s infinite alternate;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .forms-box {
+    background: #f8f9fa; /* Light background for contrast */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+
+  .image-container {
+    max-width: calc(100% - 40px); /* Adjust the value based on the padding of the form */
+    margin: 0 auto; /* Center the image horizontally */
+  }
+  
+  
+  
+  

@@ -6,8 +6,7 @@ import "./Login.scss";
 export const Login = () => {
   return (
     <div className="container">
-    <div className="row justify-content-center">
-      <div className="col-md-6">
+    <div className="row justify-content-start">
         <div className="card mt-5">
           <div className="card-body">
             <h2 className="card-title text-center">Login</h2>
@@ -22,22 +21,28 @@ export const Login = () => {
               className="input-textField"
             />
             <Input
-              type="text"
+              type="password"
               name="password"
               label="Password"
-              placeholder="Choose a password"
+              placeholder="Insert your password"
               onChange={() => console.log("changed")}
               className="input-textField"
             />
-              <Button
+            <div className="d-flex justify-content-between">
+            <Button
               type={"button"} className=""
               onClick={() => console.log("click")}
               > Login
             </Button> 
+            <Button
+              type={"button"} role="secondary"
+              onClick={() => console.log("click")}
+              > Register
+            </Button> 
+            </div>
               </div>
             </form>
           </div>
-        </div>
       </div>
     </div>
   </div>
