@@ -95,6 +95,15 @@ public class RequestHandler implements HttpHandler {
                 response = e.getMessage();
                 statusCode = 500;
             }
+        }  else if (method.equals("GET") && path.matches("/api/courses")) {
+            try {
+                List<Course> coursesList = courseApi.getAllCourses();
+                response = toJson(coursesList);
+                statusCode = 200;
+            } catch (Exception e) {
+                response = e.getMessage();
+                statusCode = 500; // Internal Server Error
+            }
         } else {
             //Here is the part where authorization by jwt is made
             //removed "Bearer " from jwt

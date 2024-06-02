@@ -78,4 +78,5 @@ public class UserController implements UserApi {
         });
         return courseGradesDTO;
     }
+
 }

@@ -18,7 +18,7 @@ public class AuthorizationService {
     private static final String SECRET_KEY = KeyGenerator.getInstance().getSecretKey();
     private static final long JWT_EXPIRATION_TIME = 3600000;//1 hour
 
-    public static void saveUser (RegisterRequest registerRequest) throws RegisterConflictException, NoSuchAlgorithmException {
+    public static void saveUser(RegisterRequest registerRequest) throws RegisterConflictException, NoSuchAlgorithmException {
 
         User checkIfUserExists = UserService.findUserByEmail(registerRequest.getEmail());
 
@@ -29,7 +29,17 @@ public class AuthorizationService {
             user.setNumeFam(registerRequest.getNumeFam());
             user.setPrenume(registerRequest.getPrenume());
             user.setParola(PasswordEncryptor.encryptPassword(registerRequest.getPassword()));
-            user.setRole(registerRequest.getRole());
+
+            // Set role based on NrMat
+            if (String.valueOf(registerRequest.getNrMat()).startsWith("1")) {
+                user.setRole("admin"); // role assignment
+            } else if (String.valueOf(registerRequest.getNrMat()).startsWith("9")) {
+                user.setRole("profesor");
+            } else {
+                // Set default role or handle other cases as needed
+                user.setRole("student");
+            }
+
             UserService.saveUser(user);
         } else {
             throw new RegisterConflictException("An user with the specified email already exists!");
@@ -57,18 +67,17 @@ public class AuthorizationService {
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION_TIME);
 
         Claims claims = Jwts.claims();
-        claims.put("id",String.valueOf(user.getId()));
+        claims.put("id", String.valueOf(user.getId()));
         claims.put("email", user.getEmail());
         claims.put("role", user.getRole());
         claims.put("firstName", user.getPrenume());
         claims.put("lastName", user.getNumeFam());
 
-
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-                .compact();
+              .setClaims(claims)
+              .setIssuedAt(now)
+              .setExpiration(expiryDate)
+              .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+              .compact();
     }
 }

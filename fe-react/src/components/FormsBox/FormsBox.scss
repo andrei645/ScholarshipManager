@@ -25,12 +25,44 @@
     border-radius: 10px;
     margin-top: 20px;
   }
+ 
+.spinner {
+  position: relative;
+  width: 100px; /* Adjust between 50px to 80px as needed */
+  height: 100px; /* Adjust between 50px to 80px as needed */
+  border: 8px solid transparent;
+  border-radius: 50%;
+  animation: spin 4s linear infinite, fade-in-out 3s linear infinite;
+  border-top: 8px solid #00293f;
+  border-right: 8px solid #f2bb00;
+  border-bottom: 8px solid #00293f;
+  border-left: 8px solid #f2bb00;
+}
 
-  .image-container {
-    max-width: calc(100% - 40px); /* Adjust the value based on the padding of the form */
-    margin: 0 auto; /* Center the image horizontally */
+.spinner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px; /* Adjust as needed */
+  color: #00293f;
+  font-weight: bold;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  
-  
-  
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in-out {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}

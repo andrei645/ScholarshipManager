@@ -9,4 +9,6 @@ public interface CourseApi {
     void createCourse(Course course);
     void deleteCourse(Long courseId) throws NotFoundException;
     List<Course> getCoursesByUserId(Long userId);
+
+  List<Course> getAllCourses();
 }

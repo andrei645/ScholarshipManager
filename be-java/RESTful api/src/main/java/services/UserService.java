@@ -61,6 +61,7 @@ public class UserService {
             statement.executeUpdate();
 
         } catch (SQLException e) {
+            System.out.println("Error when saving user: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -180,5 +181,4 @@ public class UserService {
 
         return courseGradesMap;
     }
-
 }

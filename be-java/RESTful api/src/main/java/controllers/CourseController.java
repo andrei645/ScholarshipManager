@@ -24,4 +24,9 @@ public class CourseController implements CourseApi {
     public List<Course> getCoursesByUserId(Long userId) {
         return CourseService.getCoursesByUserId(userId);
     }
+
+    @Override
+    public List<Course> getAllCourses() {
+        return CourseService.getAllCourses();
+    }
 }

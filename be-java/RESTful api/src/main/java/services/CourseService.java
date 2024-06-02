@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import models.User;
 
 public class CourseService {
 
@@ -81,4 +82,24 @@ public class CourseService {
 
         return courses;
     }
+
+    public static List<Course> getAllCourses() {
+        // This method would typically interact with a database
+        // to retrieve all courses. For this example, we'll mock the data.
+        List<Course> courses = new ArrayList<>();
+        try {
+            String query = "SELECT id, name FROM courses";
+            PreparedStatement statement = Data.getInstance().getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String name = resultSet.getString("name");
+                courses.add(new Course(id, name));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching courses: " + e.getMessage());
+        }
+        return courses;
+    }
+
 }

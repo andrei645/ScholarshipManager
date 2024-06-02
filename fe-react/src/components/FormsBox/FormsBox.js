@@ -11,21 +11,24 @@ export const FormsBox = () => {
 
   return (
     <>
-      {/* <Button type="button" role="secondary" onClick={() => setIsOnLoginComponent(!isOnLoginComponent)}>Switch</Button>
-            {
-                isOnLoginComponent ? <Login/> : <Register/>
-            } */}
-
       <div className="forms-box container border-fade">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <Login />
+            <div className="row justify-content-center align-items-center">
+              <div className="col-md-6">
+                {isOnLoginComponent ? (
+                  <Login setIsOnLoginComponent={setIsOnLoginComponent} />
+                ) : (
+                  <Register setIsOnLoginComponent={setIsOnLoginComponent} />
+                )}
+              </div>
+              <div className="col-md-6 d-flex justify-content-center align-items-center">
+                <div className="spinner-container">
+                  <div className="spinner">
+                    <span className="spinner-text">S</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className=" col-md-6 image-container">
-        <img src={loginImg} alt="Login" className="img-fluid" />
-      </div>
-        </div>
-      </div>
     </>
   );
 };

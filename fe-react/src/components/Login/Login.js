@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import { useMySchoolarContext } from "../../context/SchoolarContext";
 import { jwtDecode } from "jwt-decode";
 
-export const Login = () => {
+export const Login = ({setIsOnLoginComponent}) => {
   const {state, setUserData} = useMySchoolarContext();
 
   const [formData, setFormData] = useState({
@@ -72,13 +72,13 @@ export const Login = () => {
               }
             <div className="d-flex justify-content-between">
             <Button
-              type={"button"} className=""
+              type={"submit"} className=""
               onClick={() => console.log("click")}
               > Login
             </Button> 
             <Button
               type={"button"} role="secondary"
-              onClick={() => console.log("click")}
+              onClick={() => setIsOnLoginComponent(false)}
               > Register
             </Button> 
             </div>

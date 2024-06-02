@@ -1,5 +1,8 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Course {
     private Long id;
     private String name;
@@ -26,5 +29,10 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static List<Course> getAllCourses() {
+        List<Course> courses = new ArrayList<>();
+        return courses;
     }
 }

@@ -5,7 +5,7 @@ import "./Register.scss";
 import { Button } from "../Button/Button";
 import axiosInstance from "../../services/AxiosInstance";
 
-export const Register = () => {
+export const Register = ({setIsOnLoginComponent}) => {
   const [userData, setUserData] = useState({ role: "student" });
   const [successfullyCreated, setSuccessfullyCreated] = useState("");
 
@@ -23,7 +23,7 @@ export const Register = () => {
   return (
     <div className="container">
       <div className="row justify-content-start">
-          <div className="card mt-5">
+          <div className="card">
             <div className="card-body">
               <h2 className="card-title text-center">Register</h2>
               <form onSubmit={handleSubmit}>
@@ -83,7 +83,18 @@ export const Register = () => {
                   <></>
                 )}
 
-                <Button type="submit">Register</Button>
+                <div className="d-flex justify-content-between">
+                  <Button
+                    type={"submit"} role="secondary"
+                    onClick={() => console.log("click")}
+                    > Register
+                  </Button> 
+                  <Button
+                    type={"button"} role="primary"
+                    onClick={() => setIsOnLoginComponent(true)}
+                    > Login
+                  </Button> 
+                </div>
               </form>
             </div>
         </div>
