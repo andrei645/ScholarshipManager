@@ -127,7 +127,8 @@ public class RequestHandler implements HttpHandler {
 
                 try {
                     if (method.equals("DELETE") && path.matches("/api/users")) {
-                        response = String.valueOf(userApi.deleteUser(payloadUserMail));
+                        User user = fromJson(body, User.class);
+                        response = String.valueOf(userApi.deleteUser(user.getEmail()));
                         statusCode = 200;
                     } else if (method.equals("GET") && path.matches("/api/users")) {
                         User user = userApi.getUserByEmail(payloadUserMail);
