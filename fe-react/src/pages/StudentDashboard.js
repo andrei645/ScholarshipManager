@@ -81,7 +81,7 @@ export const StudentDashboard = ({ userDetails }) => {
                                 <tr>
                                     <td><b>Grade</b></td>
                                     {courses.map((course, index) => (
-                                        <td key={index}>{getGradeForCourse(course.id)}</td>
+                                        <td key={index}><b>{getGradeForCourse(course.id)}</b></td>
                                     ))}
                                 </tr>
                             </tbody>

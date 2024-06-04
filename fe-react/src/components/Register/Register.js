@@ -49,7 +49,7 @@ export const Register = ({setIsOnLoginComponent}) => {
                 </div>
                 <div className="mb-3">
                   <Input
-                    type="text"
+                    type="email"
                     name="email"
                     label="Email"
                     placeholder="Enter your email"
