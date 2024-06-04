@@ -83,7 +83,7 @@ public class RequestHandler implements HttpHandler {
                 response = e.getMessage();
                 statusCode = 500;
             }
-        } else if (method.equals("POST") && path.matches("/api/authenticate")) {
+        }  else if (method.equals("POST") && path.matches("/api/authenticate")) {
             try {
                 AuthenticationRequest authenticationRequest = fromJson(body, AuthenticationRequest.class);
                 response = authorizationApi.authenticate(authenticationRequest).getTokenJwt();
@@ -130,7 +130,7 @@ public class RequestHandler implements HttpHandler {
                         User user = fromJson(body, User.class);
                         response = String.valueOf(userApi.deleteUser(user.getEmail()));
                         statusCode = 200;
-                    } else if (method.equals("GET") && path.matches("/api/users")) {
+                    }  else if (method.equals("GET") && path.matches("/api/users")) {
                         User user = userApi.getUserByEmail(payloadUserMail);
                         response = toJson(user);
                         statusCode = 200;
@@ -138,6 +138,15 @@ public class RequestHandler implements HttpHandler {
                         User user = fromJson(body, User.class);
                         response = String.valueOf(userApi.updateUser(user));
                         statusCode = 200;
+                    } else if (method.equals("GET") && path.matches("/api/users/all")) {
+                        try {
+                            List<User> usersList = userApi.getAllUsers();
+                            response = toJson(usersList);
+                            statusCode = 200;
+                        } catch (Exception e) {
+                            response = e.getMessage();
+                            statusCode = 500; // Internal Server Error
+                        }
                     } else if (method.equals("GET") && path.matches("/api/users/grades")) {
                         List<Grade> grades = userApi.getGradesByUserId(payloadUserId);
                         response = toJson(grades);

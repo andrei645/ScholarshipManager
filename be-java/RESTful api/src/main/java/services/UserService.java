@@ -181,4 +181,30 @@ public class UserService {
 
         return courseGradesMap;
     }
+
+    public static List<User> getAllUsers() {
+        // This method would typically interact with a database
+        // to retrieve all courses. For this example, we'll mock the data.
+        List<User> users = new ArrayList<>();
+        try {
+            String query = "SELECT id, nr_mat, nume_fam, prenume, email, parola, role FROM users";
+            PreparedStatement statement = Data.getInstance().getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+
+                user.setId(resultSet.getLong("id"));
+                user.setNrMat(resultSet.getLong("nr_mat"));
+                user.setNumeFam(resultSet.getString("nume_fam"));
+                user.setPrenume(resultSet.getString("prenume"));
+                user.setEmail(resultSet.getString("email"));
+                user.setParola(resultSet.getString("parola"));
+                user.setRole(resultSet.getString("role"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching courses: " + e.getMessage());
+        }
+        return users;
+    }
 }

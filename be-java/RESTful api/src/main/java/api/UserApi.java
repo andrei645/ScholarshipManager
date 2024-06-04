@@ -18,4 +18,6 @@ public interface UserApi {
     List<Grade> getGradesByUserId(Long userId) throws NotFoundException;
     List<Course> getCoursesByUserId(Long userId) throws NotFoundException;
     List<CourseGradesDTO> getCourseAndNotesByUserId(Long userId) throws NotFoundException;
+
+    List<User> getAllUsers();
 }

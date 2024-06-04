@@ -79,4 +79,8 @@ public class UserController implements UserApi {
         return courseGradesDTO;
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        return UserService.getAllUsers();
+    }
 }
