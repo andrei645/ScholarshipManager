@@ -37,6 +37,10 @@ export const AdminDashboard = ({ userDetails }) => {
     const professors = await getProffesors();
     setProfessors(professors);
   }
+  const handleLogout = () => {
+    sessionStorage.removeItem("auth_code");
+    window.location.href = "/";
+  };
 
   return (
     <div className="container-fluid">
@@ -92,6 +96,14 @@ export const AdminDashboard = ({ userDetails }) => {
               <b>Rol : </b>
               {role}
             </p>
+            <div style={{ width: "100%", float: "right", paddingLeft: "15px", paddingTop:"100px"}}>
+            <Button
+                  type="submit"
+                  role="secondary"
+                  onClick={handleLogout}
+                >Log out
+                </Button>
+                </div>
           </div>
         </div>
         <div className="col-md-10 bg-light">

@@ -1,6 +1,7 @@
 import axiosInstance from '../services/AxiosInstance';
 import React, { useEffect, useState } from 'react';
 import avatar from '../assets/images/8b167af653c2399dd93b952a48740620-removebg-preview.png';
+import { Button } from '../components/Button/Button';
 
 export const TeacherDashboard = ({ userDetails }) => {
 
@@ -20,6 +21,11 @@ export const TeacherDashboard = ({ userDetails }) => {
         fetchUserSubjects();
     }, [id]);
 
+    const handleLogout = () => {
+        sessionStorage.removeItem("auth_code");
+        window.location.href = "/";
+      };
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -33,6 +39,13 @@ export const TeacherDashboard = ({ userDetails }) => {
                         <p style={{ width: '100%', textAlign: 'left', paddingLeft: '15px' }}><b>Nume Familie : </b>{lastName}</p>
                         <p style={{ width: '100%', textAlign: 'left', paddingLeft: '15px' }}><b>Email:</b> {email}</p>
                         <p style={{ width: '100%', textAlign: 'left', paddingLeft: '15px' }}><b>Rol : </b>{role}</p>
+                        <div style={{ width: "100%", float: "right", paddingLeft: "15px", paddingTop:"100px"}}>
+                            <Button
+                                type="submit"
+                                role="secondary"
+                                onClick={handleLogout}
+                                >Log out</Button>
+                        </div>
                     </div>
                 </div>
                 {/* Main content */}
