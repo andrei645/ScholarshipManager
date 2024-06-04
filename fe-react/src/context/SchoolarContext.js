@@ -27,6 +27,7 @@ export const SchoolProvider = ({ children }) => {
   const setUserData = (payload) => {
     setState((prevState) => ({ ...prevState, userDetails: payload }));
   };
+
   return (
     <SchoolarContext.Provider value={{ state, setUserData }}>
       {children}

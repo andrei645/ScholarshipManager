@@ -3,76 +3,40 @@ import React, { useState } from "react";
 import avatar from "../assets/images/0d64989794b1a4c9d89bff571d3d5842-removebg-preview.png";
 import { Button } from "../components/Button/Button";
 import { Input } from "../components/Input/Input";
+import { TableCourses } from "../components/TableCourses/TableCourses";
+import { getCourses } from "../services/courses";
+import { getProffesors, getUsers } from "../services/users";
+import { TableUsers } from "../components/TableUsers/TableUsers";
+import { TableProfessor } from "../components/TableProfessors/TableProfessors";
 
 export const AdminDashboard = ({ userDetails }) => {
   const { id, email, role, firstName, lastName, nrMat } = userDetails;
 
-  const [showUpdateUserInput, setShowUpdateUserInput] = useState(false);
-  const [showDeleteUserInput, setShowDeleteUserInput] = useState(false);
-  const [showDeleteCoursesInput, setShowDeleteCoursesInput] = useState(false);
-  const [showGetInfoInput, setShowGetInfoInput] = useState(false);
+  const [tabType, setTabType] = useState("courses");
+  const [courses, setCourses] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [professors, setProfessors] = useState([]);
 
-  const [updateUserInput, setUpdateUserInput] = useState("");
-  const [deleteUserInput, setDeleteUserInput] = useState("");
-  const [deleteCoursesInput, setDeleteCoursesInput] = useState("");
-  const [getInfoInput, setGetInfoInput] = useState("");
 
-  const handleUpdateUserInputChange = (event) => {
-    setUpdateUserInput(event.target.value);
-  };
+  const showCourses = async () => {
+    setTabType("courses");
+    const courses = await getCourses();
+    setCourses(courses);
 
-  const handleDeleteUserInputChange = (event) => {
-    setDeleteUserInput(event.target.value);
-  };
+  }
 
-  const handleDeleteCoursesInputChange = (event) => {
-    setDeleteCoursesInput(event.target.value);
-  };
+  const showUsers = async () => {
+    console.log("shpw usr")
+    setTabType("users");
+    const users = await getUsers();
+    setUsers(users);
+  }
 
-  const handleGetInfoInputChange = (event) => {
-    setGetInfoInput(event.target.value);
-  };
-
-  const handleDeleteUser = () => {
-    const jwtToken = sessionStorage.getItem("auth_code");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    };
-
-    // Assuming the email is stored in the deleteUserInput state
-    const emailToDelete = deleteUserInput;
-
-    axiosInstance
-      .delete("api/users", { ...config, data: { email: emailToDelete } })
-      .then((response) => {
-        alert("User deleted successfully");
-      })
-      .catch((error) => {
-        alert("Error deleting user");
-      });
-  };
-
-  const handleDeleteCourse = () => {
-    const jwtToken = sessionStorage.getItem("auth_code");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    };
-
-    const courseIdToDelete = deleteCoursesInput;
-
-    axiosInstance
-      .delete(`api/courses/${courseIdToDelete}`, config)
-      .then((response) => {
-        alert("Course deleted successfully");
-      })
-      .catch((error) => {
-        alert("Error deleting course");
-      });
-  };
+  const showProfessor = async () => {
+    setTabType("professor");
+    const professors = await getProffesors();
+    setProfessors(professors);
+  }
 
   return (
     <div className="container-fluid">
@@ -138,27 +102,28 @@ export const AdminDashboard = ({ userDetails }) => {
                 <Button
                   type="submit"
                   role="primary"
-                  onClick={() => setShowUpdateUserInput(true)}
+                  onClick={showProfessor}
                 >
-                  Update User
+                  Professor
                 </Button>
                 <Button
                   type="submit"
                   role="secondary"
-                  onClick={() => setShowDeleteUserInput(true)}
+                  onClick={showUsers}
                 >
-                  Delete User
+                  Users
                 </Button>
                 <Button
                   type="submit"
                   role="primary"
-                  onClick={() => setShowDeleteCoursesInput(true)}
+                  onClick={showCourses}
                 >
-                  Delete Courses
+                  Courses
                 </Button>
                 <Button
                   type="submit"
                   role="secondary"
+                  onClick={() => setTabType("getInfo")}
                 >
                   Get info
                 </Button>
@@ -167,109 +132,20 @@ export const AdminDashboard = ({ userDetails }) => {
           </div>
           <div className="row mt-4">
             <div className="col">
-              {showUpdateUserInput && (
-                <>
-                  <Input
-                    type="text"
-                    name="updateUserInput"
-                    value={updateUserInput}
-                    placeholder="Enter updated user ID"
-                    onChange={handleUpdateUserInputChange}
-                  />
-                  <Input
-                    type="text"
-                    name="updateUserInput"
-                    value={updateUserInput}
-                    placeholder="Enter updated user registration number"
-                    onChange={handleUpdateUserInputChange}
-                  />
-                  <Input
-                    type="text"
-                    name="updateUserInput"
-                    value={updateUserInput}
-                    placeholder="Enter updated user last name"
-                    onChange={handleUpdateUserInputChange}
-                  />
-                  <Input
-                    type="text"
-                    name="updateUserInput"
-                    value={updateUserInput}
-                    placeholder="Enter updated user first name"
-                    onChange={handleUpdateUserInputChange}
-                  />
-                  <Input
-                    type="text"
-                    name="updateUserInput"
-                    value={updateUserInput}
-                    placeholder="Enter updated user email"
-                    onChange={handleUpdateUserInputChange}
-                  />
-                  <Input
-                    type="text"
-                    name="updateUserInput"
-                    value={updateUserInput}
-                    placeholder="Enter updated user password"
-                    onChange={handleUpdateUserInputChange}
-                  />
-                  <Input
-                    type="text"
-                    name="updateUserInput"
-                    value={updateUserInput}
-                    placeholder="Enter updated user password"
-                    onChange={handleUpdateUserInputChange}
-                  />
-                  {updateUserInput && (
-                    <button className="submit-button">Submit</button>
-                  )}
-                  <button className="close-button" onClick={() => setShowUpdateUserInput(false)}>x</button>
-                </>
-              )}
-              {showDeleteUserInput && (
-                <>
-                  <Input
-                    type="text"
-                    name="deleteUserInput"
-                    value={deleteUserInput}
-                    placeholder="Enter user email to delete"
-                    onChange={handleDeleteUserInputChange}
-                  />
-                  {deleteUserInput && (
-                    <button className="submit-button" onClick={handleDeleteUser}>Submit</button>
-                  )}
-                  <button className="close-button" onClick={() => setShowDeleteUserInput(false)}>x</button>
-                </>
-              )}
-              {showDeleteCoursesInput && (
-                <>
-                  <Input
-                    type="text"
-                    name="deleteCoursesInput"
-                    value={deleteCoursesInput}
-                    placeholder="Enter course name to delete"
-                    onChange={handleDeleteCoursesInputChange}
-                  />
-                  {deleteCoursesInput && (
-                    <button className="submit-button" onClick={handleDeleteCourse}>Submit</button>
-                  )}
-                  <button className="close-button" onClick={() => setShowDeleteCoursesInput(false)}>x</button>
-                </>
-              )}
-              {showGetInfoInput && (
-                <>
-                  <Input
-                    type="text"
-                    name="getInfoInput"
-                    value={getInfoInput}
-                    placeholder="Enter user info to get"
-                    onChange={handleGetInfoInputChange}
-                  />
-                  {getInfoInput && (
-                    <button className="submit-button">Submit</button>
-                  )}
-                  <button className="close-button" onClick={() => setShowGetInfoInput(false)}>x</button>
-                </>
-              )}
+            {
+               tabType === "courses" ? 
+                <TableCourses data={courses} setCourses={setCourses}/> : ""
+            }
+            {
+              tabType === "users" ? 
+                <TableUsers data={users} setUsers={setUsers}/> : ""
+            }
+            {
+              tabType === "professor" ? 
+                <TableProfessor data={professors} setProfessors={setProfessors}/> : ""
+            }
             </div>
+            
           </div>
         </div>
       </div>
