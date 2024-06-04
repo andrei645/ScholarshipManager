@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import avatar from "../assets/images/0d64989794b1a4c9d89bff571d3d5842-removebg-preview.png";
 import { Button } from "../components/Button/Button";
 import { Input } from "../components/Input/Input";
+import { Route, Routes } from "react-router-dom";
+import { Authentication } from "./Authentication";
 
 export const AdminDashboard = ({ userDetails }) => {
   const { id, email, role, firstName, lastName, nrMat } = userDetails;
@@ -16,6 +18,8 @@ export const AdminDashboard = ({ userDetails }) => {
   const [deleteUserInput, setDeleteUserInput] = useState("");
   const [deleteCoursesInput, setDeleteCoursesInput] = useState("");
   const [getInfoInput, setGetInfoInput] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
 
   const handleUpdateUserInputChange = (event) => {
     setUpdateUserInput(event.target.value);
@@ -31,6 +35,11 @@ export const AdminDashboard = ({ userDetails }) => {
 
   const handleGetInfoInputChange = (event) => {
     setGetInfoInput(event.target.value);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("auth_code");
+    window.location.href = "/";
   };
 
   const handleDeleteUser = () => {
@@ -128,6 +137,14 @@ export const AdminDashboard = ({ userDetails }) => {
               <b>Rol : </b>
               {role}
             </p>
+            <div style={{ width: "100%", float: "right", paddingLeft: "15px", paddingTop:"100px"}}>
+            <Button
+                  type="submit"
+                  role="secondary"
+                  onClick={handleLogout}
+                >Log out
+                </Button>
+                </div>
           </div>
         </div>
         <div className="col-md-10 bg-light">
